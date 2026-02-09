@@ -1,9 +1,9 @@
 import { request } from '@playwright/test';
-import { BASE_URL } from './env.js'; 
+import { BASE_URL, REQRES_TOKEN } from './env.js';
 
 export async function getApiContext() {
-  const token = process.env.REQRES_TOKEN || '';
-  const cleanToken = token.replace(/[\n\r\s\t]/g, '');
+  // Sanitize the token
+  const cleanToken = (REQRES_TOKEN || '').replace(/[\n\r\s\t]/g, '');
 
   return await request.newContext({
     baseURL: BASE_URL,

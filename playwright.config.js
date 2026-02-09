@@ -26,15 +26,13 @@ export default defineConfig({
     }]
   ],
 
+  
   use: {
-    baseURL: 'https://reqres.in',
-    
+    baseURL: process.env.BASE_URL || 'https://reqres.in',
     extraHTTPHeaders: {
-      'x-api-key': (process.env.REQRES_TOKEN || '').trim(),
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     },
-
     trace: 'on',
   },
 });

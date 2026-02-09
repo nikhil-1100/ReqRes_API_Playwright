@@ -25,14 +25,17 @@ jobs:
       run: npm ci
 
     - name: Install Playwright Browsers
+      # Required for system dependencies and Trace Viewer support
       run: npx playwright install --with-deps
 
     - name: Execute API Tests
       env:
-        REQRES_TOKEN: ${{ secrets.REQRES_TOKEN }} 
+        # We pass the Base URL, but no token is required for ReqRes public endpoints
+        BASE_URL: https://reqres.in
       run: npx playwright test
 
     - name: Upload Test Artifacts
+      # This ensures you get your Monocart report even if tests fail
       if: always() 
       uses: actions/upload-artifact@v4
       with:
