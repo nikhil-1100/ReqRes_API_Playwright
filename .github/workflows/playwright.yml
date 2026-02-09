@@ -1,0 +1,41 @@
+name: ReqRes API Automation
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch: 
+
+jobs:
+  api-testing:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+
+    - name: Execute API Tests
+      env:
+        REQRES_TOKEN: ${{ secrets.REQRES_TOKEN }}
+      run: npx playwright test
+
+    - name: Upload Test Artifacts
+      if: always() 
+      uses: actions/upload-artifact@v4
+      with:
+        name: reqres-api-reports
+        path: testAssets/artifacts/
+        retention-days: 30
