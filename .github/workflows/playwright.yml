@@ -32,6 +32,7 @@ jobs:
       env:
         # We pass the Base URL, but no token is required for ReqRes public endpoints
         BASE_URL: https://reqres.in
+        REQRES_TOKEN: ${{ secrets.REQRES_TOKEN }}
       run: npx playwright test
 
     - name: Upload Test Artifacts
