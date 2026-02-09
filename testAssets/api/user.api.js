@@ -1,19 +1,28 @@
 import { getApiContext } from '../utils/apiClient.js';
 
 export class UserApi {
+  constructor() {
+    this.api = null;
+  }
+
+  async init() {
+    if (!this.api) {
+      this.api = await getApiContext();
+    }
+  }
 
   async createUser(payload) {
-    const api = await getApiContext();
-    return api.post('/api/users', { data: payload });
+    await this.init();
+    return this.api.post('/api/users', { data: payload });
   }
 
   async getUser(userId) {
-    const api = await getApiContext();
-    return api.get(`/api/users/${userId}`);
+    await this.init();
+    return this.api.get(`/api/users/${userId}`);
   }
 
   async updateUser(userId, payload) {
-    const api = await getApiContext();
-    return api.put(`/api/users/${userId}`, { data: payload });
+    await this.init();
+    return this.api.put(`/api/users/${userId}`, { data: payload });
   }
 }
